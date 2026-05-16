@@ -79,7 +79,31 @@ border:1px solid #222;
 border-radius:8px;
 color:white
 }
+.search-results{
+position:fixed;
+top:75px;
+right:25px;
+width:260px;
+background:#111;
+border-radius:10px;
+overflow:hidden;
+z-index:999999;
+display:none;
+border:1px solid #222;
+max-height:300px;
+overflow-y:auto;
+}
 
+.search-item{
+padding:12px;
+cursor:pointer;
+border-bottom:1px solid #222;
+font-size:14px
+}
+
+.search-item:hover{
+background:#1c1c1c
+}
 /* HERO */
 
 .hero{
@@ -419,6 +443,7 @@ grid-template-columns:repeat(2,1fr)
 <input class="search"
 id="search"
 placeholder="Search Movies...">
+<div id="searchResults" class="search-results"></div>
 
 </header>
 
