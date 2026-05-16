@@ -78,29 +78,7 @@ border:1px solid #222;
 border-radius:8px;
 color:white
 }
-.search-results{
-position:absolute;
-top:65px;
-right:25px;
-width:260px;
-background:#111;
-border-radius:10px;
-overflow:hidden;
-z-index:9999;
-display:none;
-border:1px solid #222
-}
 
-.search-item{
-padding:12px;
-cursor:pointer;
-border-bottom:1px solid #222;
-font-size:14px
-}
-
-.search-item:hover{
-background:#1c1c1c
-}
 /* HERO */
 
 .hero{
@@ -438,7 +416,6 @@ grid-template-columns:repeat(2,1fr)
 </nav>
 
 <input class="search"
-<div id="searchResults" class="search-results"></div>
 id="search"
 placeholder="Search Movies...">
 
@@ -1055,42 +1032,27 @@ filtered
 /* ==============================
 SEARCH
 ============================== */
-const searchInput =
-document.getElementById("search");
 
-const searchResults =
-document.getElementById("searchResults");
-
-searchInput.addEventListener("input",function(){
+document.getElementById("search")
+.addEventListener("input",function(){
 
 const q=this.value.toLowerCase();
 
-if(q===""){
+const filtered=
+movies.filter(m=>
 
-searchResults.style.display="none";
+m.title.toLowerCase()
+.includes(q)
 
-return;
+);
 
-}
-
-const filtered = movies.filter(function(m){
-
-return m.title.toLowerCase().includes(q);
-
-});
-
-searchResults.innerHTML="";
-
-filtered.forEach(function(movie){
-
-searchResults.innerHTML +=
-'<div class="search-item" onclick="openMovie(\''+movie.title+'\')">'+movie.title+'</div>';
+renderSection(
+"latestGrid",
+filtered
+);
 
 });
 
-searchResults.style.display="block";
-
-});
 /* ==============================
 LOAD
 ============================== */
