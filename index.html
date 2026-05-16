@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MovieBD</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CineBD OTT</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -15,24 +20,37 @@ font-family:Arial,sans-serif
 
 body{
 background:#050505;
-color:#fff
+color:#fff;
+overflow-x:hidden
 }
 
+::-webkit-scrollbar{
+width:7px
+}
+
+::-webkit-scrollbar-thumb{
+background:#ff004c
+}
+
+/* NAVBAR */
+
 header{
-height:76px;
-background:#151515;
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:70px;
+background:rgba(0,0,0,.85);
+backdrop-filter:blur(10px);
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 32px;
-position:sticky;
-top:0;
-z-index:99;
-border-bottom:1px solid #222
+padding:0 25px;
+z-index:999
 }
 
 .logo{
-font-size:38px;
+font-size:34px;
 font-weight:900
 }
 
@@ -40,217 +58,273 @@ font-weight:900
 color:#ff004c
 }
 
+nav{
+display:flex;
+gap:18px
+}
+
 nav a{
-color:#eee;
+color:#ddd;
 text-decoration:none;
-margin:0 13px;
-font-weight:800;
-font-size:15px
+font-size:14px;
+font-weight:700
 }
 
 .search{
-width:270px;
-background:#242424;
-border:1px solid #333;
-border-radius:7px;
-padding:13px 16px;
-color:#fff
+width:260px;
+padding:11px 14px;
+background:#141414;
+border:1px solid #222;
+border-radius:8px;
+color:white
 }
 
-.slider{
-height:340px;
-background:
-linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.92)),
-url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1600")
-center/cover;
+/* HERO */
+
+.hero{
+height:92vh;
+position:relative;
 display:flex;
 align-items:center;
-justify-content:center;
-text-align:center
+padding:80px 50px;
+overflow:hidden
 }
 
-.slider-box{
-background:rgba(0,0,0,.62);
-padding:25px 45px;
-border-radius:12px;
-border:1px solid #333
+.hero::after{
+content:'';
+position:absolute;
+inset:0;
+background:
+linear-gradient(to right,
+rgba(0,0,0,.95),
+rgba(0,0,0,.3)),
+linear-gradient(to top,
+#050505,
+transparent)
 }
 
-.slider h1{
-font-size:54px
+.hero-bg{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:1s
 }
 
-.slider p{
+.hero-content{
+position:relative;
+z-index:2;
+max-width:600px
+}
+
+.hero-tag{
+display:inline-block;
+padding:8px 16px;
+background:#ff004c;
+border-radius:30px;
+font-size:13px;
+font-weight:800;
+margin-bottom:15px
+}
+
+.hero h1{
+font-size:60px;
+margin-bottom:12px
+}
+
+.hero p{
 color:#ccc;
-margin-top:8px;
-font-weight:bold
+line-height:1.7;
+margin-bottom:25px
 }
+
+.hero-buttons{
+display:flex;
+gap:14px;
+flex-wrap:wrap
+}
+
+.btn{
+padding:14px 22px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+font-weight:900;
+font-size:15px
+}
+
+.btn-primary{
+background:#ff004c;
+color:white
+}
+
+.btn-secondary{
+background:#1d1d1d;
+color:white
+}
+
+/* CATEGORY */
 
 .category-bar{
-padding:25px 30px;
-background:#080808;
 display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center
+gap:12px;
+padding:25px;
+flex-wrap:wrap
 }
 
 .cat-btn{
 padding:10px 18px;
-border-radius:25px;
-border:2px solid #00eaff;
-background:#070707;
-color:#fff;
-font-weight:900;
-cursor:pointer
+border-radius:30px;
+border:1px solid #333;
+background:#111;
+color:white;
+cursor:pointer;
+font-weight:800
 }
 
 .cat-btn.active,
 .cat-btn:hover{
-color:#00eaff;
-box-shadow:0 0 15px rgba(0,234,255,.45)
+background:#ff004c;
+border-color:#ff004c
 }
 
-.layout{
-display:grid;
-grid-template-columns:1fr 330px;
-gap:30px;
-padding:30px
+/* SECTIONS */
+
+.section{
+padding:25px
 }
 
-.title{
-font-size:26px;
-margin-bottom:20px
+.section-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px
+}
+
+.section-title{
+font-size:25px;
+font-weight:900
 }
 
 .movies{
 display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:22px
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px
 }
 
+/* CARD */
+
 .card{
-background:#141414;
-position:relative;
+background:#121212;
+border-radius:10px;
 overflow:hidden;
-border-radius:8px;
-border:1px solid #1f1f1f;
-cursor:pointer
+position:relative;
+cursor:pointer;
+transition:.3s
+}
+
+.card:hover{
+transform:translateY(-8px)
 }
 
 .card img{
 width:100%;
 height:280px;
-object-fit:cover;
-display:block;
-transition:.35s
+object-fit:cover
 }
 
-.card:hover img{
-transform:scale(1.05);
-filter:brightness(.55)
+.overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(transparent,rgba(0,0,0,.95));
+opacity:0;
+transition:.3s;
+display:flex;
+align-items:center;
+justify-content:center
 }
 
-.card h3{
-font-size:17px;
-padding:12px 13px 4px
+.card:hover .overlay{
+opacity:1
+}
+
+.play{
+width:60px;
+height:60px;
+background:#ff004c;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px
+}
+
+.movie-info{
+padding:12px
+}
+
+.movie-info h3{
+font-size:15px;
+margin-bottom:7px
 }
 
 .meta{
-padding:0 13px 13px;
 color:#aaa;
-font-size:13px
+font-size:12px
 }
 
 .badge{
 position:absolute;
-right:0;
-bottom:0;
-background:#2f89ff;
-padding:8px 12px;
+top:10px;
+left:10px;
+background:#ff004c;
+padding:5px 10px;
+font-size:11px;
+font-weight:900;
+border-radius:4px
+}
+
+.rating{
+position:absolute;
+top:10px;
+right:10px;
+background:rgba(0,0,0,.7);
+padding:5px 8px;
 font-size:12px;
+border-radius:4px;
 font-weight:900
 }
 
-.watch{
-position:absolute;
-left:50%;
-top:43%;
-transform:translate(-50%,-50%);
-background:#00c8ff;
-color:white;
-text-decoration:none;
-padding:11px 20px;
-border-radius:6px;
-font-weight:900;
-opacity:0;
-transition:.3s
-}
-
-.card:hover .watch{
-opacity:1
-}
-
-.sidebar{
-position:sticky;
-top:95px;
-height:max-content
-}
-
-.sidebar h3{
-font-size:22px;
-margin-bottom:15px
-}
-
-.popular{
-background:#101010;
-margin-bottom:20px;
-overflow:hidden;
-border:1px solid #1f1f1f;
-cursor:pointer
-}
-
-.popular img{
-width:100%;
-height:145px;
-object-fit:cover
-}
-
-.popular p{
-font-size:13px;
-padding:9px;
-font-weight:800
-}
+/* MODAL */
 
 .modal{
-display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.84);
-z-index:999;
+background:rgba(0,0,0,.9);
+display:none;
 align-items:center;
 justify-content:center;
-padding:20px
+padding:20px;
+z-index:9999
 }
 
 .modal-box{
-max-width:850px;
 background:#111;
-border:1px solid #333;
-border-radius:12px;
-overflow:hidden;
-display:grid;
-grid-template-columns:300px 1fr
+max-width:850px;
+width:100%;
+border-radius:14px;
+overflow:hidden
 }
 
-.modal-box img{
+.modal-banner{
 width:100%;
-height:100%;
+height:350px;
 object-fit:cover
 }
 
 .modal-content{
-padding:24px
+padding:25px
 }
 
 .close{
@@ -261,91 +335,65 @@ color:#ff004c
 }
 
 .modal-content h2{
+font-size:32px;
 margin-bottom:10px
 }
 
 .modal-content p{
 color:#bbb;
-line-height:1.6
+line-height:1.7;
+margin-bottom:20px
 }
 
-.unlock-box{
-margin-top:18px;
-padding:15px;
-background:#0a0a0a;
-border:1px solid #252525;
-border-radius:8px
+.modal-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap
 }
 
-.unlock-text{
-font-size:14px;
-color:#aaa;
-margin-bottom:12px
-}
-
-.btn{
-display:inline-block;
-background:#00c8ff;
-color:#fff;
-text-decoration:none;
-padding:12px 18px;
-border-radius:7px;
-font-weight:900;
-border:0;
-cursor:pointer
-}
-
-.btn.used{
-background:#ff004c
-}
+/* FOOTER */
 
 footer{
+padding:35px;
 text-align:center;
-padding:25px;
 border-top:1px solid #222;
-margin-top:30px
+margin-top:40px
 }
 
-@media(max-width:1050px){
-.movies{
-grid-template-columns:repeat(2,1fr)
-}
-}
+/* MOBILE */
 
 @media(max-width:850px){
 
 header{
 height:auto;
-gap:14px;
+padding:15px;
 flex-wrap:wrap;
-padding:15px
+gap:15px
+}
+
+nav{
+width:100%;
+justify-content:center
 }
 
 .search{
 width:100%
 }
 
-.layout{
-grid-template-columns:1fr
+.hero{
+padding:100px 20px
+}
+
+.hero h1{
+font-size:38px
 }
 
 .movies{
-grid-template-columns:1fr
-}
-
-.slider h1{
-font-size:34px
-}
-
-.sidebar{
-position:static
-}
-
-.modal-box{
-grid-template-columns:1fr
+grid-template-columns:repeat(2,1fr)
 }
 
 }
+
 </style>
 </head>
 
@@ -354,77 +402,215 @@ grid-template-columns:1fr
 <header>
 
 <div class="logo">
-<span>M</span>ovieBD
+<span>C</span>ineBD
 </div>
 
 <nav>
 <a href="#">Home</a>
-<a href="#">Movies</a>
-<a href="#">Categories</a>
-<a href="#">Contact</a>
+<a href="#">Bangla</a>
+<a href="#">Hindi</a>
+<a href="#">English</a>
+<a href="#">Korean</a>
 </nav>
 
-<input id="search" class="search" placeholder="Search movies...">
+<input class="search"
+id="search"
+placeholder="Search Movies...">
 
 </header>
 
-<section class="slider" id="slider">
+<!-- HERO -->
 
-<div class="slider-box">
-<h1 id="sliderTitle">MovieBD</h1>
-<p>TMDb Auto Movie System</p>
+<section class="hero">
+
+<img class="hero-bg"
+id="heroBg">
+
+<div class="hero-content">
+
+<div class="hero-tag">
+#1 Trending
+</div>
+
+<h1 id="heroTitle">
+Loading...
+</h1>
+
+<p id="heroDesc">
+Loading...
+</p>
+
+<div class="hero-buttons">
+
+<button class="btn btn-primary"
+id="heroWatch">
+Watch Now
+</button>
+
+<button class="btn btn-secondary"
+id="heroInfo">
+More Info
+</button>
+
+</div>
+
 </div>
 
 </section>
 
-<div class="category-bar" id="categoryBar"></div>
+<!-- CATEGORY -->
 
-<div class="layout">
+<div class="category-bar">
 
-<main>
+<button class="cat-btn active"
+onclick="filterMovies('all',this)">
+All
+</button>
 
-<h2 class="title">
-Trending on MovieBD
+<button class="cat-btn"
+onclick="filterMovies('bangla',this)">
+Bangla
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('hindi',this)">
+Hindi
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('english',this)">
+English
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('korean',this)">
+Korean
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('2025',this)">
+2025
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('2024',this)">
+2024
+</button>
+
+</div>
+
+<!-- LATEST -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+Latest Movies
 </h2>
-
-<div class="movies" id="movieGrid">
-Loading movies...
 </div>
 
-</main>
-
-<aside class="sidebar">
-
-<h3>Popular</h3>
-
-<div id="popularBox"></div>
-
-</aside>
-
+<div class="movies"
+id="latestGrid">
 </div>
 
-<div class="modal" id="modal">
+</section>
+
+<!-- BANGLA -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+Bangla Movies
+</h2>
+</div>
+
+<div class="movies"
+id="banglaGrid">
+</div>
+
+</section>
+
+<!-- HINDI -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+Hindi Movies
+</h2>
+</div>
+
+<div class="movies"
+id="hindiGrid">
+</div>
+
+</section>
+
+<!-- ENGLISH -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+English Movies
+</h2>
+</div>
+
+<div class="movies"
+id="englishGrid">
+</div>
+
+</section>
+
+<!-- KOREAN -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+Korean Movies
+</h2>
+</div>
+
+<div class="movies"
+id="koreanGrid">
+</div>
+
+</section>
+
+<!-- MODAL -->
+
+<div class="modal"
+id="modal">
 
 <div class="modal-box">
 
-<img id="modalImg">
+<img id="modalBanner"
+class="modal-banner">
 
 <div class="modal-content">
 
-<span class="close" onclick="closeModal()">×</span>
+<span class="close"
+onclick="closeModal()">
+×
+</span>
 
-<h2 id="modalTitle"></h2>
+<h2 id="modalTitle">
+</h2>
 
-<p id="modalInfo"></p>
+<p id="modalDesc">
+</p>
 
-<div class="unlock-box">
+<div class="modal-buttons">
 
-<div class="unlock-text" id="unlockText">
-Click 3 ads to unlock the movie link.
-</div>
+<button class="btn btn-primary"
+id="watchBtn">
+Watch Now
+</button>
 
-<button class="btn" id="getLinkBtn" onclick="handleGetLink()">
-Step 1/3 - Continue
+<button class="btn btn-secondary">
+Download
 </button>
 
 </div>
@@ -436,51 +622,63 @@ Step 1/3 - Continue
 </div>
 
 <footer>
-© 2026 MovieBD
+© 2026 CineBD OTT
 </footer>
 
 <script>
 
+/* ==============================
+TMDB
+============================== */
+
 const TMDB_API_KEY="ecd720c01128d1959d69001c8ae49592";
+
+const IMG="https://image.tmdb.org/t/p/original";
+
+/* ==============================
+MASTER AD LINK
+CHANGE ONLY HERE
+============================== */
 
 const adlink="https://omg10.com/4/10969479";
 
+/* ==============================
+GLOBAL 3 CLICK ADS SYSTEM
+============================== */
 
+let clickCount=0;
 
-/* ===========================
-MOVIES ADD SECTION
-===========================
+function handleAdAction(callback){
 
-NEW MOVIE ADD KORTE:
+clickCount++;
 
-{
-query:"Movie Name",
-link:"Movie Link",
-category:"Category Name"
-},
+if(clickCount<=3){
 
-=========================== */
+window.open(adlink,"_blank");
 
-const MY_LINKS=[
+return;
+
+}
+
+clickCount=0;
+
+callback();
+
+}
+
+/* ==============================
+MOVIES
+NEW MOVIE TOP E ADD KORBA
+============================== */
+
+const MY_MOVIES=[
 
 {
 query:"Youth",
 link:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",
 category:"Romantic Comedy"
 },
-
-{
-query:"Interstellar",
-link:"https://gofile.io/d/EXAMPLE123",
-category:"SciFi Adventure"
-},
-  
-{
-query:"Joker",
-link:"https://pixeldrain.com/u/EXAMPLE456",
-category:"Thriller Drama"
-},
-  
+ 
 {
 query:"Mission Impossible - The Final Reckoning",
 link:"https://gofile.io/d/rpnACX",
@@ -492,19 +690,22 @@ query:"Kaalidas 2",
 link:"https://gofile.io/d/WhcuPF",
 category:"Thriller"
 },
-
+  
 ];
 
-
-
-const IMG="https://image.tmdb.org/t/p/w780";
+/* ==============================
+GLOBAL
+============================== */
 
 let movies=[];
-let currentList=[];
+
+let heroIndex=0;
+
 let selectedMovie=null;
-let clickCount=0;
 
-
+/* ==============================
+TMDB SEARCH
+============================== */
 
 async function tmdbSearch(query){
 
@@ -519,55 +720,114 @@ return data.results[0];
 
 }
 
-
+/* ==============================
+LOAD MOVIES
+============================== */
 
 async function loadMovies(){
 
-for(const item of MY_LINKS){
+movies=[];
+
+for(const item of MY_MOVIES){
 
 const tmdb=await tmdbSearch(item.query);
+
+if(!tmdb) continue;
 
 movies.push({
 
 title:tmdb.title,
 
-year:tmdb.release_date
-? tmdb.release_date.slice(0,4)
-: "Unknown",
+overview:tmdb.overview,
 
-cat:item.category,
-
-img:tmdb.poster_path
+poster:
+tmdb.poster_path
 ? IMG+tmdb.poster_path
 : "",
 
-overview:tmdb.overview,
+backdrop:
+tmdb.backdrop_path
+? IMG+tmdb.backdrop_path
+: "",
 
 rating:tmdb.vote_average,
 
-link:item.link
+year:item.year,
+
+language:item.language,
+
+genre:item.genre,
+
+link:item.link,
+
+isNew:item.isNew,
+
+createdAt:item.createdAt
 
 });
 
 }
 
-showMovies(movies);
+/* LATEST FIRST */
 
-makeCategories();
+movies.sort((a,b)=>
 
-showPopular();
+new Date(b.createdAt)
+-
+new Date(a.createdAt)
 
-setHero();
+);
+
+renderAll();
+
+startHero();
 
 }
 
+/* ==============================
+RENDER
+============================== */
 
+function renderAll(){
 
-function showMovies(list){
+renderSection(
+"latestGrid",
+movies
+);
 
-currentList=list;
+renderSection(
+"banglaGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="bangla")
+);
 
-const grid=document.getElementById("movieGrid");
+renderSection(
+"hindiGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="hindi")
+);
+
+renderSection(
+"englishGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="english")
+);
+
+renderSection(
+"koreanGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="korean")
+);
+
+}
+
+/* ==============================
+RENDER SECTION
+============================== */
+
+function renderSection(id,list){
+
+const grid=document.getElementById(id);
 
 grid.innerHTML="";
 
@@ -576,24 +836,37 @@ list.forEach((m,i)=>{
 grid.innerHTML+=`
 
 <div class="card"
-onclick="openModalFromList(${i})">
+onclick="handleAdAction(()=>openMovie('${m.title}'))">
 
-<img src="${m.img}">
+${m.isNew
+? `<div class="badge">NEW</div>`
+: ``}
 
-<a class="watch"
-href="javascript:void(0)">
-Watch Now
-</a>
+<div class="rating">
+⭐ ${m.rating.toFixed(1)}
+</div>
 
-<h3>${m.title}</h3>
+<img src="${m.poster}">
+
+<div class="overlay">
+
+<div class="play">
+<i class="fas fa-play"></i>
+</div>
+
+</div>
+
+<div class="movie-info">
+
+<h3>
+${m.title}
+</h3>
 
 <p class="meta">
-${m.year} • ${m.cat}
+${m.year} • ${m.language}
 </p>
 
-<span class="badge">
-MOVIE
-</span>
+</div>
 
 </div>
 
@@ -603,256 +876,194 @@ MOVIE
 
 }
 
+/* ==============================
+OPEN MOVIE
+============================== */
 
+function openMovie(title){
 
-function makeCategories(){
-
-const cats=["All"];
-
-movies.forEach(m=>{
-
-m.cat.split(" ").forEach(c=>{
-
-if(!cats.includes(c))
-cats.push(c);
-
-});
-
-});
-
-const bar=document.getElementById("categoryBar");
-
-bar.innerHTML="";
-
-cats.forEach((c,i)=>{
-
-bar.innerHTML+=`
-
-<button
-class="cat-btn ${i===0?'active':''}"
-onclick="filterCategory('${c}',this)">
-
-${c}
-
-</button>
-
-`;
-
-});
-
-}
-
-
-
-function showPopular(){
-
-const box=document.getElementById("popularBox");
-
-box.innerHTML="";
-
-movies.forEach((m,i)=>{
-
-box.innerHTML+=`
-
-<div class="popular"
-onclick="openModalByIndex(${i})">
-
-<img src="${m.img}">
-
-<p>${m.title}</p>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-
-function setHero(){
-
-document.getElementById("sliderTitle")
-.innerText=movies[0].title;
-
-document.getElementById("slider")
-.style.background=
-
-`linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.92)),url('${movies[0].img}') center/cover`;
-
-}
-
-
-
-function openModalFromList(i){
-
-selectedMovie=currentList[i];
-
-openModalData(selectedMovie);
-
-}
-
-
-
-function openModalByIndex(i){
-
-selectedMovie=movies[i];
-
-openModalData(selectedMovie);
-
-}
-
-
-
-function openModalData(movie){
-
-clickCount=0;
+selectedMovie=
+movies.find(m=>m.title===title);
 
 document.getElementById("modal")
 .style.display="flex";
 
-document.getElementById("modalImg")
-.src=movie.img;
+document.getElementById("modalBanner")
+.src=selectedMovie.backdrop;
 
 document.getElementById("modalTitle")
-.innerText=movie.title;
+.innerText=selectedMovie.title;
 
-document.getElementById("modalInfo")
+document.getElementById("modalDesc")
 .innerText=
 
-movie.overview+
+selectedMovie.overview+
 
-" | Category: "+movie.cat+
+" | "+selectedMovie.language+
 
-" | Release: "+movie.year+
+" | "+selectedMovie.genre+
 
-" | Rating: "+movie.rating;
+" | "+selectedMovie.year;
 
-document.getElementById("unlockText")
-.innerText=
+/* WATCH */
 
-"Click 3 ads to unlock the movie link.";
+document.getElementById("watchBtn")
+.onclick=()=>{
 
-document.getElementById("getLinkBtn")
-.innerText="Step 1/3 - Continue";
+handleAdAction(()=>{
 
-}
+window.open(
+selectedMovie.link,
+"_blank"
+);
 
+});
 
-
-function handleGetLink(){
-
-clickCount++;
-
-if(clickCount<=3){
-
-window.open(adlink,"_blank");
-
-if(clickCount===1){
-
-document.getElementById("getLinkBtn")
-.innerText="Step 2/3 - Continue";
+};
 
 }
 
-if(clickCount===2){
-
-document.getElementById("getLinkBtn")
-.innerText="Step 3/3 - Continue";
-
-}
-
-if(clickCount===3){
-
-document.getElementById("getLinkBtn")
-.innerText="Open Movie Link";
-
-}
-
-return;
-
-}
-
-window.open(selectedMovie.link,"_blank");
-
-clickCount=0;
-
-document.getElementById("unlockText")
-.innerText=
-
-"Link used. Complete steps again.";
-
-document.getElementById("getLinkBtn")
-.innerText="Get New Link";
-
-document.getElementById("getLinkBtn")
-.classList.add("used");
-
-}
-
-
+/* ==============================
+CLOSE MODAL
+============================== */
 
 function closeModal(){
 
 document.getElementById("modal")
 .style.display="none";
 
-clickCount=0;
+}
+
+/* ==============================
+HERO AUTO SLIDER
+============================== */
+
+function startHero(){
+
+changeHero();
+
+setInterval(changeHero,2000);
 
 }
 
+function changeHero(){
 
+const movie=movies[heroIndex];
 
-function filterCategory(cat,btn){
+document.getElementById("heroBg")
+.src=movie.backdrop;
+
+document.getElementById("heroTitle")
+.innerText=movie.title;
+
+document.getElementById("heroDesc")
+.innerText=movie.overview;
+
+/* HERO BUTTONS */
+
+document.getElementById("heroWatch")
+.onclick=()=>{
+
+handleAdAction(()=>{
+
+window.open(
+movie.link,
+"_blank"
+);
+
+});
+
+};
+
+document.getElementById("heroInfo")
+.onclick=()=>{
+
+handleAdAction(()=>{
+
+openMovie(movie.title);
+
+});
+
+};
+
+heroIndex++;
+
+if(heroIndex>=movies.length){
+
+heroIndex=0;
+
+}
+
+}
+
+/* ==============================
+FILTER
+============================== */
+
+function filterMovies(type,btn){
 
 document.querySelectorAll(".cat-btn")
-.forEach(b=>b.classList.remove("active"));
+.forEach(b=>
+b.classList.remove("active")
+);
 
 btn.classList.add("active");
 
-if(cat==="All"){
+let filtered=[];
 
-showMovies(movies);
+if(type=="all"){
 
-return;
+filtered=movies;
 
-}
+}else{
 
-showMovies(
+filtered=movies.filter(m=>
 
-movies.filter(m=>
+m.language.toLowerCase()
+.includes(type.toLowerCase())
 
-m.cat.toLowerCase()
-.includes(cat.toLowerCase())
+||
 
-)
+m.year.includes(type)
 
 );
 
 }
 
+renderSection(
+"latestGrid",
+filtered
+);
 
+}
+
+/* ==============================
+SEARCH
+============================== */
 
 document.getElementById("search")
 .addEventListener("input",function(){
 
-let q=this.value.toLowerCase();
+const q=this.value.toLowerCase();
 
-showMovies(
-
+const filtered=
 movies.filter(m=>
 
 m.title.toLowerCase()
 .includes(q)
 
-)
+);
 
+renderSection(
+"latestGrid",
+filtered
 );
 
 });
 
-
+/* ==============================
+LOAD
+============================== */
 
 loadMovies();
 
