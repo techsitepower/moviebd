@@ -1065,7 +1065,7 @@ searchInput.addEventListener("input",function(){
 
 const q=this.value.toLowerCase();
 
-if(!q){
+if(q===""){
 
 searchResults.style.display="none";
 
@@ -1073,28 +1073,18 @@ return;
 
 }
 
-const filtered=
-movies.filter(m=>
+const filtered = movies.filter(function(m){
 
-m.title.toLowerCase()
-.includes(q)
+return m.title.toLowerCase().includes(q);
 
-);
+});
 
 searchResults.innerHTML="";
 
-filtered.forEach(movie=>{
+filtered.forEach(function(movie){
 
-searchResults.innerHTML+=`
-
-<div class="search-item"
-onclick="handleAdAction(()=>openMovie('${movie.title}'))">
-
-${movie.title}
-
-</div>
-
-`;
+searchResults.innerHTML +=
+'<div class="search-item" onclick="openMovie(\''+movie.title+'\')">'+movie.title+'</div>';
 
 });
 
