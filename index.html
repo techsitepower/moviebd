@@ -407,11 +407,12 @@ grid-template-columns:repeat(2,1fr)
 
 <nav>
 <a href="#">Home</a>
-<a href="#">Bangla</a>
-<a href="#">Hindi</a>
-<a href="#">English</a>
-<a href="#">Hindi Dubbed</a>
-<a href="#">Adult</a>
+<a href="#latestSection">Latest</a>
+<a href="#banglaSection">Bangla</a>
+<a href="#hindiSection">Hindi</a>
+<a href="#englishSection">English</a>
+<a href="#dubbedSection">Hindi Dubbed</a>
+<a href="#adultSection">Adult</a>
 </nav>
 
 <input class="search"
@@ -459,45 +460,9 @@ More Info
 
 </section>
 
-<!-- CATEGORY -->
-
-<div class="category-bar">
-
-<button class="cat-btn active"
-onclick="filterMovies('all',this)">
-All
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('bangla',this)">
-Bangla
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('hindi',this)">
-Hindi
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('english',this)">
-English
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('2025',this)">
-2025
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('2024',this)">
-2024
-</button>
-
-</div>
-
 <!-- LATEST -->
 
-<section class="section">
+<section class="section" id="latestSection">
 
 <div class="section-header">
 <h2 class="section-title">
@@ -513,8 +478,8 @@ id="latestGrid">
 
 <!-- BANGLA -->
 
-<section class="section">
-
+<section class="section" id="banglaSection">
+ 
 <div class="section-header">
 <h2 class="section-title">
 Bangla Movies
@@ -529,8 +494,8 @@ id="banglaGrid">
 
 <!-- HINDI -->
 
-<section class="section">
-
+<section class="section" id="hindiSection">
+ 
 <div class="section-header">
 <h2 class="section-title">
 Hindi Movies
@@ -545,8 +510,8 @@ id="hindiGrid">
 
 <!-- ENGLISH -->
 
-<section class="section">
-
+<section class="section" id="englishSection">
+ 
 <div class="section-header">
 <h2 class="section-title">
 English Movies
@@ -560,8 +525,8 @@ id="englishGrid">
 </section>
  <!-- Hindi Dubbed -->
  
-<section class="section">
-
+<section class="section" id="dubbedSection">
+ 
 <div class="section-header">
 <h2 class="section-title">
 Hindi Dubbed
@@ -575,8 +540,8 @@ id="hindiDubbedGrid">
 </section>
   <!-- Adult -->
  
-<section class="section">
-
+<section class="section" id="adultSection">
+ 
 <div class="section-header">
 <h2 class="section-title">
 Adult
