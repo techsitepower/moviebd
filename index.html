@@ -562,7 +562,36 @@ id="englishGrid">
 </div>
 
 </section>
+ <!-- Hindi Dubbed -->
+ 
+<section class="section">
 
+<div class="section-header">
+<h2 class="section-title">
+Hindi Dubbed
+</h2>
+</div>
+
+<div class="movies"
+id="hindiDubbedGrid">
+</div>
+
+</section>
+  <!-- 18+ -->
+ 
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+18+
+</h2>
+</div>
+
+<div class="movies"
+id="18+Grid">
+</div>
+
+</section>
 <!-- KOREAN -->
 
 <section class="section">
@@ -823,11 +852,23 @@ renderSection(
 movies.filter(m=>
 m.language.toLowerCase()=="english")
 );
-
+ 
+renderSection(
+"hindiDubbedGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="hindi dubbed")
+);
+ 
 renderSection(
 "koreanGrid",
 movies.filter(m=>
 m.language.toLowerCase()=="korean")
+);
+
+renderSection(
+"18+Grid",
+movies.filter(m=>
+m.language.toLowerCase()=="18+")
 );
 
 }
