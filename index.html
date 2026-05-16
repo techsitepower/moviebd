@@ -488,8 +488,8 @@ Hindi Dubbed
 </button>
 
 <button class="cat-btn"
-onclick="filterMovies('18+',this)">
-18+
+onclick="filterMovies('Adult',this)">
+Adult
 </button>
 
 </div>
@@ -572,18 +572,18 @@ id="hindiDubbedGrid">
 </div>
 
 </section>
-  <!-- 18+ -->
+  <!-- Adult -->
  
 <section class="section">
 
 <div class="section-header">
 <h2 class="section-title">
-18+
+Adult
 </h2>
 </div>
 
 <div class="movies"
-id="18+Grid">
+id="AdultGrid">
 </div>
 
 </section>
@@ -798,6 +798,8 @@ new Date(a.createdAt)
 
 );
 
+if(movies.length){
+
 renderAll();
 
 startHero();
@@ -840,15 +842,9 @@ m.language.toLowerCase()=="hindi dubbed")
 );
  
 renderSection(
-"koreanGrid",
+"AdultGrid",
 movies.filter(m=>
-m.language.toLowerCase()=="korean")
-);
-
-renderSection(
-"18+Grid",
-movies.filter(m=>
-m.language.toLowerCase()=="18+")
+m.language.toLowerCase()=="Adult")
 );
 
 }
@@ -980,35 +976,34 @@ setInterval(changeHero,2000);
 
 function changeHero(){
 
+if(!movies.length) return;
+
 const movie=movies[heroIndex];
 
-document.getElementById("heroBg")
-.src=movie.backdrop;
+if(!movie) return;
 
-document.getElementById("heroTitle")
-.innerText=movie.title;
+document.getElementById("heroBg").src =
+movie.backdrop || movie.poster;
 
-document.getElementById("heroDesc")
-.innerText=movie.overview;
+document.getElementById("heroTitle").innerText =
+movie.title || "No Title";
+
+document.getElementById("heroDesc").innerText =
+movie.overview || "No Description";
 
 /* HERO BUTTONS */
 
-document.getElementById("heroWatch")
-.onclick=()=>{
+document.getElementById("heroWatch").onclick=()=>{
 
 handleAdAction(()=>{
 
-window.open(
-movie.link,
-"_blank"
-);
+window.open(movie.link,"_blank");
 
 });
 
 };
 
-document.getElementById("heroInfo")
-.onclick=()=>{
+document.getElementById("heroInfo").onclick=()=>{
 
 handleAdAction(()=>{
 
@@ -1027,7 +1022,6 @@ heroIndex=0;
 }
 
 }
-
 /* ==============================
 FILTER
 ============================== */
