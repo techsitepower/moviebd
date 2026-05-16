@@ -410,7 +410,8 @@ grid-template-columns:repeat(2,1fr)
 <a href="#">Bangla</a>
 <a href="#">Hindi</a>
 <a href="#">English</a>
-<a href="#">Korean</a>
+<a href="#">Hindi Dubbed</a>
+<a href="#">Adult</a>
 </nav>
 
 <input class="search"
@@ -480,11 +481,6 @@ Hindi
 <button class="cat-btn"
 onclick="filterMovies('english',this)">
 English
-</button>
-
-<button class="cat-btn"
-onclick="filterMovies('korean',this)">
-Korean
 </button>
 
 <button class="cat-btn"
@@ -577,37 +573,21 @@ id="hindiDubbedGrid">
 </div>
 
 </section>
-  <!-- 18+ -->
+  <!-- Adult -->
  
 <section class="section">
 
 <div class="section-header">
 <h2 class="section-title">
-18+
+Adult
 </h2>
 </div>
 
 <div class="movies"
-id="18+Grid">
+id="AdultGrid">
 </div>
 
 </section>
-<!-- KOREAN -->
-
-<section class="section">
-
-<div class="section-header">
-<h2 class="section-title">
-Korean Movies
-</h2>
-</div>
-
-<div class="movies"
-id="koreanGrid">
-</div>
-
-</section>
-
 <!-- MODAL -->
 
 <div class="modal"
@@ -861,15 +841,9 @@ m.language.toLowerCase()=="hindi dubbed")
 );
  
 renderSection(
-"koreanGrid",
+"AdultGrid",
 movies.filter(m=>
-m.language.toLowerCase()=="korean")
-);
-
-renderSection(
-"18+Grid",
-movies.filter(m=>
-m.language.toLowerCase()=="18+")
+m.language.toLowerCase()=="Adult")
 );
 
 }
