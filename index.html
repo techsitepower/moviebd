@@ -1059,26 +1059,46 @@ filtered
 SEARCH
 ============================== */
 
-document.getElementById("search")
-.addEventListener("input",function(){
+const searchInput = document.getElementById("search");
 
-const q=this.value.toLowerCase();
+const searchResults = document.getElementById("searchResults");
 
-const filtered=
-movies.filter(m=>
+searchInput.onkeyup = function(){
 
-m.title.toLowerCase()
-.includes(q)
+const q = searchInput.value.toLowerCase();
 
-);
+if(q.length < 1){
 
-renderSection(
-"latestGrid",
-filtered
-);
+searchResults.style.display = "none";
+
+return;
+
+}
+
+const filtered = movies.filter(function(movie){
+
+return movie.title.toLowerCase().includes(q);
 
 });
 
+let html = "";
+
+filtered.forEach(function(movie){
+
+html += `
+<div class="search-item"
+onclick="openMovie('${movie.title}')">
+${movie.title}
+</div>
+`;
+
+});
+
+searchResults.innerHTML = html;
+
+searchResults.style.display = "block";
+
+};
 /* ==============================
 LOAD
 ============================== */
