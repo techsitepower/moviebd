@@ -483,13 +483,18 @@ English
 </button>
 
 <button class="cat-btn"
-onclick="filterMovies('hindi dubbed',this)">
-Hindi Dubbed
+onclick="filterMovies('korean',this)">
+Korean
 </button>
 
 <button class="cat-btn"
-onclick="filterMovies('Adult',this)">
-Adult
+onclick="filterMovies('2025',this)">
+2025
+</button>
+
+<button class="cat-btn"
+onclick="filterMovies('2024',this)">
+2024
 </button>
 
 </div>
@@ -572,18 +577,33 @@ id="hindiDubbedGrid">
 </div>
 
 </section>
-  <!-- Adult -->
+  <!-- 18+ -->
  
 <section class="section">
 
 <div class="section-header">
 <h2 class="section-title">
-Adult
+18+
 </h2>
 </div>
 
 <div class="movies"
-id="AdultGrid">
+id="18+Grid">
+</div>
+
+</section>
+<!-- KOREAN -->
+
+<section class="section">
+
+<div class="section-header">
+<h2 class="section-title">
+Korean Movies
+</h2>
+</div>
+
+<div class="movies"
+id="koreanGrid">
 </div>
 
 </section>
@@ -691,7 +711,7 @@ isNew:true,
 link:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",
 createdAt:"2026-05-13"
 },
- 
+
 {
 query:"Mission Impossible - The Final Reckoning",
 language:"Hindi Dubbed",
@@ -710,7 +730,7 @@ year:"2026",
 link:"https://gofile.io/d/WhcuPF",
 createdAt:"2026-05-17"
 },
-  
+
 ];
 
 /* ==============================
@@ -798,8 +818,6 @@ new Date(a.createdAt)
 
 );
 
-if(movies.length){
-
 renderAll();
 
 startHero();
@@ -834,6 +852,7 @@ renderSection(
 movies.filter(m=>
 m.language.toLowerCase()=="english")
 );
+
  
 renderSection(
 "hindiDubbedGrid",
@@ -842,9 +861,15 @@ m.language.toLowerCase()=="hindi dubbed")
 );
  
 renderSection(
-"AdultGrid",
+"koreanGrid",
 movies.filter(m=>
-m.language.toLowerCase()=="Adult")
+m.language.toLowerCase()=="korean")
+);
+
+renderSection(
+"18+Grid",
+movies.filter(m=>
+m.language.toLowerCase()=="18+")
 );
 
 }
@@ -976,34 +1001,35 @@ setInterval(changeHero,2000);
 
 function changeHero(){
 
-if(!movies.length) return;
-
 const movie=movies[heroIndex];
 
-if(!movie) return;
+document.getElementById("heroBg")
+.src=movie.backdrop;
 
-document.getElementById("heroBg").src =
-movie.backdrop || movie.poster;
+document.getElementById("heroTitle")
+.innerText=movie.title;
 
-document.getElementById("heroTitle").innerText =
-movie.title || "No Title";
-
-document.getElementById("heroDesc").innerText =
-movie.overview || "No Description";
+document.getElementById("heroDesc")
+.innerText=movie.overview;
 
 /* HERO BUTTONS */
 
-document.getElementById("heroWatch").onclick=()=>{
+document.getElementById("heroWatch")
+.onclick=()=>{
 
 handleAdAction(()=>{
 
-window.open(movie.link,"_blank");
+window.open(
+movie.link,
+"_blank"
+);
 
 });
 
 };
 
-document.getElementById("heroInfo").onclick=()=>{
+document.getElementById("heroInfo")
+.onclick=()=>{
 
 handleAdAction(()=>{
 
@@ -1022,6 +1048,7 @@ heroIndex=0;
 }
 
 }
+
 /* ==============================
 FILTER
 ============================== */
