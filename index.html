@@ -1058,46 +1058,46 @@ filtered
 SEARCH
 ============================== */
 
-const searchInput = document.getElementById("search");
+const searchBox = document.getElementById("search");
 
-const searchResults = document.getElementById("searchResults");
+const resultBox = document.getElementById("searchResults");
 
-searchInput.onkeyup = function(){
+searchBox.addEventListener("keyup", function () {
 
-const q = searchInput.value.toLowerCase();
+let keyword = this.value.toLowerCase();
 
-if(q.length < 1){
+if(keyword === ""){
 
-searchResults.style.display = "none";
+resultBox.style.display = "none";
+
+resultBox.innerHTML = "";
 
 return;
 
 }
 
-const filtered = movies.filter(function(movie){
+let output = "";
 
-return movie.title.toLowerCase().includes(q);
+movies.forEach(function(movie){
 
-});
+if(movie.title.toLowerCase().includes(keyword)){
 
-let html = "";
-
-filtered.forEach(function(movie){
-
-html += `
+output += `
 <div class="search-item"
 onclick="openMovie('${movie.title}')">
 ${movie.title}
 </div>
 `;
 
+}
+
 });
 
-searchResults.innerHTML = html;
+resultBox.innerHTML = output;
 
-searchResults.style.display = "block";
+resultBox.style.display = "block";
 
-};
+});
 /* ==============================
 LOAD
 ============================== */
