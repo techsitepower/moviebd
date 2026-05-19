@@ -600,6 +600,12 @@ onclick="closeModal()">
 
 <p id="modalDesc">
 </p>
+<video 
+id="moviePlayer"
+controls
+width="100%"
+style="margin-top:20px;border-radius:10px"
+></video>
 
 <div class="modal-buttons">
 
@@ -937,10 +943,12 @@ document.getElementById("watchBtn")
 
 handleAdAction(()=>{
 
-window.open(
-selectedMovie.link,
-"_blank"
-);
+const player =
+document.getElementById("moviePlayer");
+
+player.src = selectedMovie.link;
+
+player.play();
 
 });
 
