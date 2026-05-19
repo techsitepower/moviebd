@@ -6,291 +6,194 @@
 
 <title>CineBD OTT</title>
 
-<script src="https://quge5.com/88/tag.min.js" data-zone="240867" async data-cfasync="false"></script>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-/* (UNCHANGED CSS - YOUR ORIGINAL) */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#050505;color:#fff;overflow-x:hidden}
-::-webkit-scrollbar{width:7px}
-::-webkit-scrollbar-thumb{background:#ff004c}
-
-/* keep everything same (no changes) */
+body{margin:0;font-family:Arial;background:#050505;color:#fff}
+header{padding:15px;background:#111;position:sticky;top:0}
+.logo{font-size:22px;font-weight:bold}
+.hero{padding:15px}
+.hero img{width:100%;height:250px;object-fit:cover;border-radius:10px}
+.section{padding:15px}
+.movies{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:#111;border-radius:10px;overflow:hidden;cursor:pointer}
+.card img{width:100%;height:180px;object-fit:cover}
+.info{padding:10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);align-items:center;justify-content:center;padding:20px}
+.modal-box{background:#111;padding:15px;border-radius:10px;width:100%;max-width:500px}
+.close{float:right;cursor:pointer;color:red}
 </style>
+
+<!-- ADS SAFE LOADER -->
+<script>
+(function(){
+  var s=document.createElement("script");
+  s.src="https://quge5.com/88/tag.min.js";
+  s.setAttribute("data-zone","240867");
+  s.setAttribute("async","true");
+  s.setAttribute("data-cfasync","false");
+  document.head.appendChild(s);
+})();
+</script>
+
 </head>
 
 <body>
 
 <header>
-<div class="logo"><span>C</span>ineBD</div>
-
-<nav>
-<a href="#">Home</a>
-<a href="#latestSection">Latest</a>
-<a href="#banglaSection">Bangla</a>
-<a href="#hindiSection">Hindi</a>
-<a href="#englishSection">English</a>
-<a href="#dubbedSection">Hindi Dubbed</a>
-<a href="#adultSection">Adult</a>
-</nav>
-
-<input class="search" id="search" placeholder="Search Movies...">
-<div id="searchResults"></div>
+<div class="logo">CineBD</div>
 </header>
 
-<section class="hero">
-<img id="heroBg" class="hero-bg">
-<div class="hero-content">
-<div class="hero-tag">#1 Trending</div>
-<h1 id="heroTitle">Loading...</h1>
-<p id="heroDesc">Loading...</p>
+<div class="hero">
+<img id="heroImg">
+<h2 id="heroTitle"></h2>
+<p id="heroDesc"></p>
 
-<div class="hero-buttons">
-<button class="btn btn-primary" id="heroWatch">Watch Now</button>
-<button class="btn btn-secondary" id="heroInfo">More Info</button>
+<button onclick="heroWatch()">Watch</button>
+<button onclick="heroInfo()">Info</button>
 </div>
+
+<div class="section">
+<div class="movies" id="grid"></div>
 </div>
-</section>
-
-<section class="section" id="latestSection">
-<div class="section-header"><h2>Latest Movies</h2></div>
-<div class="movies" id="latestGrid"></div>
-</section>
-
-<section class="section" id="banglaSection"><div class="section-header"><h2>Bangla Movies</h2></div><div class="movies" id="banglaGrid"></div></section>
-<section class="section" id="hindiSection"><div class="section-header"><h2>Hindi Movies</h2></div><div class="movies" id="hindiGrid"></div></section>
-<section class="section" id="englishSection"><div class="section-header"><h2>English Movies</h2></div><div class="movies" id="englishGrid"></div></section>
-<section class="section" id="dubbedSection"><div class="section-header"><h2>Hindi Dubbed</h2></div><div class="movies" id="hindiDubbedGrid"></div></section>
-<section class="section" id="adultSection"><div class="section-header"><h2>Adult</h2></div><div class="movies" id="AdultGrid"></div></section>
 
 <div class="modal" id="modal">
 <div class="modal-box">
-<img id="modalBanner" class="modal-banner">
-
-<div class="modal-content">
-<span class="close" onclick="closeModal()">×</span>
-
-<h2 id="modalTitle"></h2>
-<p id="modalDesc"></p>
-
-<video id="moviePlayer" controls width="100%" style="margin-top:20px;border-radius:10px"></video>
-
-<div class="modal-buttons">
-<button class="btn btn-primary" id="watchBtn">Watch Now</button>
-<button class="btn btn-secondary">Download</button>
-</div>
-
+<span class="close" onclick="closeModal()">X</span>
+<h2 id="mTitle"></h2>
+<p id="mDesc"></p>
+<video id="player" controls style="width:100%"></video>
 </div>
 </div>
-</div>
-
-<footer>© 2026 CineBD OTT</footer>
 
 <script>
 
-/* ==============================
-FIXED GLOBALS
-============================== */
-
+/* =====================
+TMDB KEY (NOW INCLUDED)
+===================== */
 const TMDB_API_KEY = "ecd720c01128d1959d69001c8ae49592";
 const IMG = "https://image.tmdb.org/t/p/original";
-const adlink = "https://omg10.com/4/10969479";
 
-/* ==============================
-FIXED ADS
-============================== */
-function handleAdAction(callback){
-window.open(adlink, "_blank");
-setTimeout(()=>callback(), 1200);
+/* =====================
+ADS
+===================== */
+const adlink="https://omg10.com/4/10969479";
+
+function handleAdAction(cb){
+window.open(adlink,"_blank");
+setTimeout(cb,1000);
 }
 
-/* ==============================
-MOVIES
-============================== */
-
-const MY_MOVIES = [
-{query:"Gangor",language:"Hindi",genre:"Adult",year:"2026",isNew:true,link:"https://gofile.io/d/ro9b8V",createdAt:"2026-05-19"},
-{query:"Youth",language:"Hindi",genre:"Romance",year:"2026",isNew:true,link:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",createdAt:"2026-05-13"},
-{query:"Mission Impossible - The Final Reckoning",language:"Hindi Dubbed",genre:"Action",year:"2026",isNew:true,link:"https://gofile.io/d/rpnACX",createdAt:"2026-05-14"},
-{query:"Kaalidas 2",language:"Hindi",genre:"Thriller",year:"2026",isNew:true,link:"https://gofile.io/d/WhcuPF",createdAt:"2026-05-17"}
+/* =====================
+MOVIES SOURCE
+===================== */
+const MY_MOVIES=[
+{query:"Gangor",video:"#"},
+{query:"Youth",video:"#"},
+{query:"Kaalidas 2",video:"#"}
 ];
 
 let movies=[];
 let heroIndex=0;
-let selectedMovie=null;
+let selected=null;
 
-/* ==============================
-TMDB
-============================== */
-
-async function tmdbSearch(query){
+/* =====================
+TMDB FETCH
+===================== */
+async function tmdbSearch(q){
 try{
-const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
-const data = await res.json();
-return data.results ? data.results[0] : null;
-}catch(e){
-return null;
-}
+const r=await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}`);
+const d=await r.json();
+return d.results?d.results[0]:null;
+}catch(e){return null;}
 }
 
-/* ==============================
-LOAD MOVIES (FIXED SAFE)
-============================== */
-
-async function loadMovies(){
-
-movies = [];
-
+/* =====================
+LOAD MOVIES
+===================== */
+async function load(){
+movies=[];
 for(const item of MY_MOVIES){
 
-const tmdb = await tmdbSearch(item.query);
-
-if(!tmdb) continue;
+const t=await tmdbSearch(item.query);
+if(!t)continue;
 
 movies.push({
-title: tmdb.title || item.query,
-overview: tmdb.overview || "",
-poster: tmdb.poster_path ? IMG + tmdb.poster_path : "",
-backdrop: tmdb.backdrop_path ? IMG + tmdb.backdrop_path : "",
-rating: tmdb.vote_average || 0,
-year: item.year,
-language: item.language,
-genre: item.genre,
-link: item.link,
-isNew: item.isNew,
-createdAt: item.createdAt
+title:t.title,
+desc:t.overview,
+img:t.poster_path?IMG+t.poster_path:"",
+backdrop:t.backdrop_path?IMG+t.backdrop_path:"",
+video:item.video
 });
 }
 
-movies.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
-
-renderAll();
-startHero();
+render();
+hero();
 }
 
-/* ==============================
-RENDER (FIXED SAFE)
-============================== */
-
-function renderSection(id, list){
-
-const grid = document.getElementById(id);
-grid.innerHTML = "";
-
-list.forEach((m) => {
-
-grid.innerHTML += `
-<div class="card" onclick="openMovie('${encodeURIComponent(m.title)}')">
-
-${m.isNew ? `<div class="badge">NEW</div>` : ""}
-
-<div class="rating">⭐ ${(m.rating || 0).toFixed(1)}</div>
-
-<img src="${m.poster}">
-
-<div class="overlay">
-<div class="play"><i class="fas fa-play"></i></div>
+/* =====================
+RENDER GRID
+===================== */
+function render(){
+const g=document.getElementById("grid");
+g.innerHTML="";
+movies.forEach((m,i)=>{
+g.innerHTML+=`
+<div class="card" onclick="openMovie(${i})">
+<img src="${m.img}">
+<div class="info">
+<h4>${m.title}</h4>
+<p>${m.desc.slice(0,60)}</p>
 </div>
-
-<div class="movie-info">
-<h3>${m.title}</h3>
-<p class="meta">${m.year} • ${m.language}</p>
-</div>
-
-</div>
-`;
+</div>`;
 });
-
 }
 
-/* ==============================
-OPEN MOVIE (FIXED INDEX BASED)
-============================== */
-
-function openMovie(title){
-
-const decodedTitle = decodeURIComponent(title);
-
-selectedMovie = movies.find(m => m.title === decodedTitle);
-
-if(!selectedMovie){
-  alert("Movie not found!");
-  return;
+/* =====================
+OPEN MOVIE
+===================== */
+function openMovie(i){
+selected=movies[i];
+document.getElementById("modal").style.display="flex";
+document.getElementById("mTitle").innerText=selected.title;
+document.getElementById("mDesc").innerText=selected.desc;
+document.getElementById("player").src=selected.video;
 }
 
-document.getElementById("modal").style.display = "flex";
-
-document.getElementById("modalBanner").src = selectedMovie.backdrop || "";
-
-document.getElementById("modalTitle").innerText = selectedMovie.title;
-
-document.getElementById("modalDesc").innerText =
-selectedMovie.overview +
-" | " + selectedMovie.language +
-" | " + selectedMovie.genre +
-" | " + selectedMovie.year;
-
-document.getElementById("watchBtn").onclick = () => {
-
-const player = document.getElementById("moviePlayer");
-
-player.src = selectedMovie.link;
-player.play();
-
-};
-
-}
-
-/* ==============================
+/* =====================
 CLOSE
-============================== */
-
+===================== */
 function closeModal(){
 document.getElementById("modal").style.display="none";
-const p=document.getElementById("moviePlayer");
-p.pause();
-p.src="";
+document.getElementById("player").src="";
 }
 
-/* ==============================
+/* =====================
 HERO
-============================== */
+===================== */
+function hero(){
 
-function startHero(){
-if(!movies.length) return;
+if(!movies.length)return;
 
-changeHero();
-setInterval(changeHero,3000);
-}
+const m=movies[heroIndex];
 
-function changeHero(){
+document.getElementById("heroImg").src=m.backdrop;
+document.getElementById("heroTitle").innerText=m.title;
+document.getElementById("heroDesc").innerText=m.desc;
 
-const m = movies[heroIndex];
-if(!m) return;
-
-document.getElementById("heroBg").src = m.backdrop || "";
-document.getElementById("heroTitle").innerText = m.title;
-document.getElementById("heroDesc").innerText = m.overview;
-
-/* HERO WATCH */
-document.getElementById("heroWatch").onclick = () =>
-handleAdAction(() => window.open(m.link, "_blank"));
-
-/* HERO INFO (FIXED) */
-document.getElementById("heroInfo").onclick = () =>
-handleAdAction(() => openMovie(encodeURIComponent(m.title)));
+heroWatch.onclick=()=>handleAdAction(()=>alert("watch"));
+heroInfo.onclick=()=>handleAdAction(()=>openMovie(heroIndex));
 
 heroIndex++;
-if(heroIndex >= movies.length) heroIndex = 0;
+if(heroIndex>=movies.length)heroIndex=0;
 }
-/* ==============================
-INIT
-============================== */
 
-loadMovies();
+setInterval(hero,3000);
+
+/* =====================
+INIT
+===================== */
+load();
 
 </script>
 
