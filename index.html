@@ -6,253 +6,1110 @@
 
 <title>CineBD OTT</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body{margin:0;font-family:Arial;background:#050505;color:#fff}
-header{display:flex;gap:10px;align-items:center;padding:15px;background:#111;position:sticky;top:0}
-.logo{font-size:20px;font-weight:bold}
 
-.search{flex:1;padding:10px;border-radius:5px;border:none}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif
+}
 
-.hero{padding:15px}
-.hero img{width:100%;height:250px;object-fit:cover;border-radius:10px}
+body{
+background:#050505;
+color:#fff;
+overflow-x:hidden
+}
 
-.section{padding:15px}
-.movies{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+::-webkit-scrollbar{
+width:7px
+}
 
-.card{background:#111;border-radius:10px;overflow:hidden;cursor:pointer}
-.card img{width:100%;height:180px;object-fit:cover}
+::-webkit-scrollbar-thumb{
+background:#ff004c
+}
 
-.info{padding:10px}
+/* NAVBAR */
 
-.btn{padding:8px 12px;border:none;border-radius:5px;cursor:pointer}
-.btn-primary{background:red;color:#fff}
-.btn-secondary{background:#333;color:#fff}
+header{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:70px;
+background:rgba(0,0,0,.85);
+backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 25px;
+z-index:999;
+position:relative;
+}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);align-items:center;justify-content:center;padding:20px}
-.modal-box{background:#111;padding:15px;border-radius:10px;width:100%;max-width:500px}
-.close{float:right;cursor:pointer;color:red}
+.logo{
+font-size:34px;
+font-weight:900
+}
+
+.logo span{
+color:#ff004c
+}
+
+nav{
+display:flex;
+gap:18px
+}
+
+nav a{
+color:#ddd;
+text-decoration:none;
+font-size:14px;
+font-weight:700
+}
+
+.search{
+width:260px;
+padding:11px 14px;
+background:#141414;
+border:1px solid #222;
+border-radius:8px;
+color:white
+}
+#searchResults{
+position:fixed;
+top:75px;
+right:25px;
+width:260px;
+background:#111;
+border-radius:10px;
+overflow:hidden;
+z-index:999999;
+display:none;
+border:1px solid #222;
+max-height:300px;
+overflow-y:auto;
+}
+.search-item{
+padding:12px;
+cursor:pointer;
+border-bottom:1px solid #222;
+font-size:14px
+}
+
+.search-item:hover{
+background:#1c1c1c
+}
+/* HERO */
+
+.hero{
+height:92vh;
+position:relative;
+display:flex;
+align-items:center;
+padding:80px 50px;
+overflow:hidden
+}
+
+.hero::after{
+content:'';
+position:absolute;
+inset:0;
+background:
+linear-gradient(to right,
+rgba(0,0,0,.95),
+rgba(0,0,0,.3)),
+linear-gradient(to top,
+#050505,
+transparent)
+}
+
+.hero-bg{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:1s
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:600px
+}
+
+.hero-tag{
+display:inline-block;
+padding:8px 16px;
+background:#ff004c;
+border-radius:30px;
+font-size:13px;
+font-weight:800;
+margin-bottom:15px
+}
+
+.hero h1{
+font-size:60px;
+margin-bottom:12px
+}
+
+.hero p{
+color:#ccc;
+line-height:1.7;
+margin-bottom:25px
+}
+
+.hero-buttons{
+display:flex;
+gap:14px;
+flex-wrap:wrap
+}
+
+.btn{
+padding:14px 22px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+font-weight:900;
+font-size:15px
+}
+
+.btn-primary{
+background:#ff004c;
+color:white
+}
+
+.btn-secondary{
+background:#1d1d1d;
+color:white
+}
+
+/* CATEGORY */
+
+.category-bar{
+display:flex;
+gap:12px;
+padding:25px;
+flex-wrap:wrap
+}
+
+.cat-btn{
+padding:10px 18px;
+border-radius:30px;
+border:1px solid #333;
+background:#111;
+color:white;
+cursor:pointer;
+font-weight:800
+}
+
+.cat-btn.active,
+.cat-btn:hover{
+background:#ff004c;
+border-color:#ff004c
+}
+
+/* SECTIONS */
+
+.section{
+padding:25px
+}
+
+.section-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px
+}
+
+.section-title{
+font-size:25px;
+font-weight:900
+}
+
+.movies{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px
+}
+
+/* CARD */
+
+.card{
+background:#121212;
+border-radius:10px;
+overflow:hidden;
+position:relative;
+cursor:pointer;
+transition:.3s
+}
+
+.card:hover{
+transform:translateY(-8px)
+}
+
+.card img{
+width:100%;
+height:280px;
+object-fit:cover
+}
+
+.overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(transparent,rgba(0,0,0,.95));
+opacity:0;
+transition:.3s;
+display:flex;
+align-items:center;
+justify-content:center
+}
+
+.card:hover .overlay{
+opacity:1
+}
+
+.play{
+width:60px;
+height:60px;
+background:#ff004c;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px
+}
+
+.movie-info{
+padding:12px
+}
+
+.movie-info h3{
+font-size:15px;
+margin-bottom:7px
+}
+
+.meta{
+color:#aaa;
+font-size:12px
+}
+
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#ff004c;
+padding:5px 10px;
+font-size:11px;
+font-weight:900;
+border-radius:4px
+}
+
+.rating{
+position:absolute;
+top:10px;
+right:10px;
+background:rgba(0,0,0,.7);
+padding:5px 8px;
+font-size:12px;
+border-radius:4px;
+font-weight:900
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:9999
+}
+
+.modal-box{
+background:#111;
+max-width:850px;
+width:100%;
+border-radius:14px;
+overflow:hidden
+}
+
+.modal-banner{
+width:100%;
+height:350px;
+object-fit:cover
+}
+
+.modal-content{
+padding:25px
+}
+
+.close{
+float:right;
+font-size:28px;
+cursor:pointer;
+color:#ff004c
+}
+
+.modal-content h2{
+font-size:32px;
+margin-bottom:10px
+}
+
+.modal-content p{
+color:#bbb;
+line-height:1.7;
+margin-bottom:20px
+}
+
+.modal-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap
+}
+
+/* FOOTER */
+
+footer{
+padding:35px;
+text-align:center;
+border-top:1px solid #222;
+margin-top:40px
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+header{
+height:auto;
+padding:15px;
+flex-wrap:wrap;
+gap:15px
+}
+
+nav{
+width:100%;
+justify-content:center
+}
+
+.search{
+width:100%
+}
+
+.hero{
+padding:100px 20px
+}
+
+.hero h1{
+font-size:38px
+}
+
+.movies{
+grid-template-columns:repeat(2,1fr)
+}
+
+}
+
 </style>
-
-<!-- ADS SAFE -->
-<script>
-(function(){
-  var s=document.createElement("script");
-  s.src="https://quge5.com/88/tag.min.js";
-  s.setAttribute("data-zone","240867");
-  s.setAttribute("async","true");
-  s.setAttribute("data-cfasync","false");
-  document.head.appendChild(s);
-})();
-</script>
-
 </head>
 
 <body>
 
 <header>
-<div class="logo">CineBD</div>
-<input class="search" id="search" placeholder="Search Movies...">
+
+<div class="logo">
+<span>C</span>ineBD
+</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#latestSection">Latest</a>
+<a href="#banglaSection">Bangla</a>
+<a href="#hindiSection">Hindi</a>
+<a href="#englishSection">English</a>
+<a href="#dubbedSection">Hindi Dubbed</a>
+<a href="#adultSection">Adult</a>
+</nav>
+
+<input class="search"
+id="search"
+placeholder="Search Movies...">
+<div id="searchResults" class="search-results"></div>
+
 </header>
 
 <!-- HERO -->
-<div class="hero">
-<img id="heroImg">
-<h2 id="heroTitle"></h2>
-<p id="heroDesc"></p>
 
-<button class="btn btn-primary" id="heroWatch">Watch Now</button>
-<button class="btn btn-secondary" id="heroInfo">More Info</button>
+<section class="hero">
+
+<img class="hero-bg"
+id="heroBg">
+
+<div class="hero-content">
+
+<div class="hero-tag">
+#1 Trending
 </div>
 
-<!-- GRID -->
-<div class="section">
-<div class="movies" id="grid"></div>
+<h1 id="heroTitle">
+Loading...
+</h1>
+
+<p id="heroDesc">
+Loading...
+</p>
+
+<div class="hero-buttons">
+
+<button class="btn btn-primary"
+id="heroWatch">
+Watch Now
+</button>
+
+<button class="btn btn-secondary"
+id="heroInfo">
+More Info
+</button>
+
 </div>
 
+</div>
+
+</section>
+
+<!-- LATEST -->
+
+<section class="section" id="latestSection">
+
+<div class="section-header">
+<h2 class="section-title">
+Latest Movies
+</h2>
+</div>
+
+<div class="movies"
+id="latestGrid">
+</div>
+
+</section>
+
+<!-- BANGLA -->
+
+<section class="section" id="banglaSection">
+ 
+<div class="section-header">
+<h2 class="section-title">
+Bangla Movies
+</h2>
+</div>
+
+<div class="movies"
+id="banglaGrid">
+</div>
+
+</section>
+
+<!-- HINDI -->
+
+<section class="section" id="hindiSection">
+ 
+<div class="section-header">
+<h2 class="section-title">
+Hindi Movies
+</h2>
+</div>
+
+<div class="movies"
+id="hindiGrid">
+</div>
+
+</section>
+
+<!-- ENGLISH -->
+
+<section class="section" id="englishSection">
+ 
+<div class="section-header">
+<h2 class="section-title">
+English Movies
+</h2>
+</div>
+
+<div class="movies"
+id="englishGrid">
+</div>
+
+</section>
+ <!-- Hindi Dubbed -->
+ 
+<section class="section" id="dubbedSection">
+ 
+<div class="section-header">
+<h2 class="section-title">
+Hindi Dubbed
+</h2>
+</div>
+
+<div class="movies"
+id="hindiDubbedGrid">
+</div>
+
+</section>
+  <!-- Adult -->
+ 
+<section class="section" id="adultSection">
+ 
+<div class="section-header">
+<h2 class="section-title">
+Adult
+</h2>
+</div>
+
+<div class="movies"
+id="AdultGrid">
+</div>
+
+</section>
 <!-- MODAL -->
-<div class="modal" id="modal">
+
+<div class="modal"
+id="modal">
+
 <div class="modal-box">
-<span class="close" onclick="closeModal()">X</span>
 
-<h2 id="mTitle"></h2>
-<p id="mDesc"></p>
+<img id="modalBanner"
+class="modal-banner">
 
-<video id="player" controls style="width:100%"></video>
+<div class="modal-content">
 
-<br><br>
+<span class="close"
+onclick="closeModal()">
+×
+</span>
 
-<button class="btn btn-primary" onclick="watchNow()">Watch Now</button>
-<button class="btn btn-secondary" onclick="downloadNow()">Download</button>
+<h2 id="modalTitle">
+</h2>
+
+<p id="modalDesc">
+</p>
+
+<div class="modal-buttons">
+
+<button class="btn btn-primary"
+id="watchBtn">
+Watch Now
+</button>
+
+<button class="btn btn-secondary">
+Download
+</button>
 
 </div>
+
 </div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 CineBD OTT
+</footer>
 
 <script>
 
-/* =====================
+/* ==============================
 TMDB
-===================== */
+============================== */
+
 const TMDB_API_KEY="ecd720c01128d1959d69001c8ae49592";
+
 const IMG="https://image.tmdb.org/t/p/original";
 
-/* =====================
-ADS
-===================== */
+/* ==============================
+MASTER AD LINK
+CHANGE ONLY HERE
+============================== */
+
 const adlink="https://omg10.com/4/10969479";
 
-function handleAdAction(cb){
+/* ==============================
+GLOBAL 3 CLICK ADS SYSTEM
+============================== */
+
+let clickCount=0;
+
+function handleAdAction(callback){
+
+clickCount++;
+
+if(clickCount<=3){
+
 window.open(adlink,"_blank");
-setTimeout(cb,1000);
+
+return;
+
 }
 
-/* =====================
-DATA
-===================== */
+clickCount=0;
+
+callback();
+
+}
+
+/* ==============================
+MOVIES
+NEW MOVIE TOP E ADD KORBA
+============================== */
+
 const MY_MOVIES=[
-{query:"Gangor",link:"#"},
-{query:"Youth",link:"#"},
-{query:"Kaalidas 2",link:"#"}
+{
+query:"Gangor",
+language:"Hindi",
+genre:"Adult",
+year:"2026",
+isNew:true,
+link:"https://gofile.io/d/ro9b8V",
+createdAt:"2026-05-19"
+},
+{
+query:"Youth",
+language:"Hindi",
+genre:"Romance",
+year:"2026",
+isNew:true,
+link:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",
+createdAt:"2026-05-13"
+},
+
+{
+query:"Mission Impossible - The Final Reckoning",
+language:"Hindi Dubbed",
+genre:"Action",
+year:"2026",
+link:"https://gofile.io/d/rpnACX",
+isNew:true,
+createdAt:"2026-05-14"
+},
+
+{
+query:"Kaalidas 2",
+language:"Hindi",
+genre:"Thriller",
+year:"2026",
+link:"https://gofile.io/d/WhcuPF",
+createdAt:"2026-05-17"
+},
+
 ];
 
-let movies=[];
-let heroIndex=0;
-let selected=null;
+/* ==============================
+GLOBAL
+============================== */
 
-/* =====================
-TMDB
-===================== */
-async function tmdbSearch(q){
-try{
-const r=await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}`);
-const d=await r.json();
-return d.results?d.results[0]:null;
-}catch(e){return null;}
+let movies=[];
+
+let heroIndex=0;
+
+let selectedMovie=null;
+
+/* ==============================
+TMDB SEARCH
+============================== */
+
+async function tmdbSearch(query){
+
+const url=
+`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+
+const res=await fetch(url);
+
+const data=await res.json();
+
+return data.results[0];
+
 }
 
-/* =====================
-LOAD
-===================== */
+/* ==============================
+LOAD MOVIES
+============================== */
+
 async function loadMovies(){
+
 movies=[];
 
 for(const item of MY_MOVIES){
 
-const t=await tmdbSearch(item.query);
-if(!t)continue;
+const tmdb=await tmdbSearch(item.query);
+
+if(!tmdb) continue;
 
 movies.push({
-title:t.title,
-desc:t.overview,
-img:t.poster_path?IMG+t.poster_path:"",
-backdrop:t.backdrop_path?IMG+t.backdrop_path:"",
-link:item.link
+
+title:tmdb.title,
+
+overview:tmdb.overview,
+
+poster:
+tmdb.poster_path
+? IMG+tmdb.poster_path
+: "",
+
+backdrop:
+tmdb.backdrop_path
+? IMG+tmdb.backdrop_path
+: "",
+
+rating:tmdb.vote_average,
+
+year:item.year,
+
+language:item.language,
+
+genre:item.genre,
+
+link:item.link,
+
+isNew:item.isNew,
+
+createdAt:item.createdAt
+
 });
+
 }
 
-render();
+/* LATEST FIRST */
+
+movies.sort((a,b)=>
+
+new Date(b.createdAt)
+-
+new Date(a.createdAt)
+
+);
+
+renderAll();
+
 startHero();
+
 }
 
-/* =====================
+/* ==============================
 RENDER
-===================== */
-function render(){
-const g=document.getElementById("grid");
-g.innerHTML="";
+============================== */
 
-movies.forEach((m,i)=>{
-g.innerHTML+=`
-<div class="card" onclick="openMovie(${i})">
-<img src="${m.img}">
-<div class="info">
-<h4>${m.title}</h4>
-<p>${m.desc.slice(0,60)}</p>
+function renderAll(){
+
+renderSection(
+"latestGrid",
+movies
+);
+
+renderSection(
+"banglaGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="bangla")
+);
+
+renderSection(
+"hindiGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="hindi")
+);
+
+renderSection(
+"englishGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="english")
+);
+
+ 
+renderSection(
+"hindiDubbedGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="hindi dubbed")
+);
+ 
+renderSection(
+"AdultGrid",
+movies.filter(m=>
+m.language.toLowerCase()=="Adult")
+);
+
+}
+
+/* ==============================
+RENDER SECTION
+============================== */
+
+function renderSection(id,list){
+
+const grid=document.getElementById(id);
+
+grid.innerHTML="";
+
+list.forEach((m,i)=>{
+
+grid.innerHTML+=`
+
+<div class="card"
+onclick="handleAdAction(()=>openMovie('${m.title}'))">
+
+${m.isNew
+? `<div class="badge">NEW</div>`
+: ``}
+
+<div class="rating">
+⭐ ${m.rating.toFixed(1)}
 </div>
-</div>`;
+
+<img src="${m.poster}">
+
+<div class="overlay">
+
+<div class="play">
+<i class="fas fa-play"></i>
+</div>
+
+</div>
+
+<div class="movie-info">
+
+<h3>
+${m.title}
+</h3>
+
+<p class="meta">
+${m.year} • ${m.language}
+</p>
+
+</div>
+
+</div>
+
+`;
+
 });
+
 }
 
-/* =====================
-OPEN MODAL
-===================== */
-function openMovie(i){
-selected=movies[i];
+/* ==============================
+OPEN MOVIE
+============================== */
 
-document.getElementById("modal").style.display="flex";
-document.getElementById("mTitle").innerText=selected.title;
-document.getElementById("mDesc").innerText=selected.desc;
+function openMovie(title){
 
-document.getElementById("player").src="";
+selectedMovie=
+movies.find(m=>m.title===title);
+
+document.getElementById("modal")
+.style.display="flex";
+
+document.getElementById("modalBanner")
+.src=selectedMovie.backdrop;
+
+document.getElementById("modalTitle")
+.innerText=selectedMovie.title;
+
+document.getElementById("modalDesc")
+.innerText=
+
+selectedMovie.overview+
+
+" | "+selectedMovie.language+
+
+" | "+selectedMovie.genre+
+
+" | "+selectedMovie.year;
+
+/* WATCH */
+
+document.getElementById("watchBtn")
+.onclick=()=>{
+
+handleAdAction(()=>{
+
+window.open(
+selectedMovie.link,
+"_blank"
+);
+
+});
+
+};
+
 }
 
-/* =====================
-BUTTONS INSIDE MODAL
-===================== */
-function watchNow(){
-handleAdAction(()=>document.getElementById("player").play());
-}
-
-function downloadNow(){
-handleAdAction(()=>window.open(selected.link,"_blank"));
-}
+/* ==============================
+CLOSE MODAL
+============================== */
 
 function closeModal(){
-document.getElementById("modal").style.display="none";
-document.getElementById("player").src="";
+
+document.getElementById("modal")
+.style.display="none";
+
 }
 
-/* =====================
-HERO
-===================== */
+/* ==============================
+HERO AUTO SLIDER
+============================== */
+
 function startHero(){
-if(!movies.length)return;
 
-setInterval(()=>{
-const m=movies[heroIndex];
+changeHero();
 
-document.getElementById("heroImg").src=m.backdrop;
-document.getElementById("heroTitle").innerText=m.title;
-document.getElementById("heroDesc").innerText=m.desc;
+setInterval(changeHero,2000);
 
-heroWatch.onclick=()=>handleAdAction(()=>window.open(m.link,"_blank"));
-heroInfo.onclick=()=>handleAdAction(()=>openMovie(heroIndex));
+}
+
+function changeHero(){
+
+const movie=movies[heroIndex];
+
+document.getElementById("heroBg")
+.src=movie.backdrop;
+
+document.getElementById("heroTitle")
+.innerText=movie.title;
+
+document.getElementById("heroDesc")
+.innerText=movie.overview;
+
+/* HERO BUTTONS */
+
+document.getElementById("heroWatch")
+.onclick=()=>{
+
+handleAdAction(()=>{
+
+window.open(
+movie.link,
+"_blank"
+);
+
+});
+
+};
+
+document.getElementById("heroInfo")
+.onclick=()=>{
+
+handleAdAction(()=>{
+
+openMovie(movie.title);
+
+});
+
+};
 
 heroIndex++;
-if(heroIndex>=movies.length)heroIndex=0;
 
-},3000);
+if(heroIndex>=movies.length){
+
+heroIndex=0;
+
 }
 
-/* =====================
-SEARCH (FIXED)
-===================== */
-document.getElementById("search").addEventListener("keyup",function(){
+}
 
-let val=this.value.toLowerCase();
+/* ==============================
+FILTER
+============================== */
 
-const filtered=movies.filter(m=>m.title.toLowerCase().includes(val));
+function filterMovies(type,btn){
 
-const g=document.getElementById("grid");
-g.innerHTML="";
+document.querySelectorAll(".cat-btn")
+.forEach(b=>
+b.classList.remove("active")
+);
 
-filtered.forEach((m,i)=>{
-g.innerHTML+=`
-<div class="card" onclick="openMovie(${i})">
-<img src="${m.img}">
-<div class="info">
-<h4>${m.title}</h4>
-<p>${m.desc.slice(0,60)}</p>
+btn.classList.add("active");
+
+let filtered=[];
+
+if(type=="all"){
+
+filtered=movies;
+
+}else{
+
+filtered=movies.filter(m=>
+
+m.language.toLowerCase()
+.includes(type.toLowerCase())
+
+||
+
+m.year.includes(type)
+
+);
+
+}
+
+renderSection(
+"latestGrid",
+filtered
+);
+
+}
+
+/* ==============================
+SEARCH
+============================== */
+
+const searchBox = document.getElementById("search");
+
+const resultBox = document.getElementById("searchResults");
+
+searchBox.addEventListener("keyup", function () {
+
+let keyword = this.value.toLowerCase();
+
+if(keyword === ""){
+
+resultBox.style.display = "none";
+
+resultBox.innerHTML = "";
+
+return;
+
+}
+
+let output = "";
+
+movies.forEach(function(movie){
+
+if(movie.title.toLowerCase().includes(keyword)){
+
+output += `
+<div class="search-item"
+onclick="openMovie('${movie.title}')">
+${movie.title}
 </div>
-</div>`;
-});
+`;
+
+}
 
 });
 
-/* =====================
-INIT
-===================== */
+resultBox.innerHTML = output;
+
+resultBox.style.display = "block";
+
+});
+/* ==============================
+LOAD
+============================== */
+
 loadMovies();
 
 </script>
