@@ -10,21 +10,32 @@
 
 <style>
 body{margin:0;font-family:Arial;background:#050505;color:#fff}
-header{padding:15px;background:#111;position:sticky;top:0}
-.logo{font-size:22px;font-weight:bold}
+header{display:flex;gap:10px;align-items:center;padding:15px;background:#111;position:sticky;top:0}
+.logo{font-size:20px;font-weight:bold}
+
+.search{flex:1;padding:10px;border-radius:5px;border:none}
+
 .hero{padding:15px}
 .hero img{width:100%;height:250px;object-fit:cover;border-radius:10px}
+
 .section{padding:15px}
 .movies{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
 .card{background:#111;border-radius:10px;overflow:hidden;cursor:pointer}
 .card img{width:100%;height:180px;object-fit:cover}
+
 .info{padding:10px}
+
+.btn{padding:8px 12px;border:none;border-radius:5px;cursor:pointer}
+.btn-primary{background:red;color:#fff}
+.btn-secondary{background:#333;color:#fff}
+
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);align-items:center;justify-content:center;padding:20px}
 .modal-box{background:#111;padding:15px;border-radius:10px;width:100%;max-width:500px}
 .close{float:right;cursor:pointer;color:red}
 </style>
 
-<!-- ADS SAFE LOADER -->
+<!-- ADS SAFE -->
 <script>
 (function(){
   var s=document.createElement("script");
@@ -42,37 +53,49 @@ header{padding:15px;background:#111;position:sticky;top:0}
 
 <header>
 <div class="logo">CineBD</div>
+<input class="search" id="search" placeholder="Search Movies...">
 </header>
 
+<!-- HERO -->
 <div class="hero">
 <img id="heroImg">
 <h2 id="heroTitle"></h2>
 <p id="heroDesc"></p>
 
-<button onclick="heroWatch()">Watch</button>
-<button onclick="heroInfo()">Info</button>
+<button class="btn btn-primary" id="heroWatch">Watch Now</button>
+<button class="btn btn-secondary" id="heroInfo">More Info</button>
 </div>
 
+<!-- GRID -->
 <div class="section">
 <div class="movies" id="grid"></div>
 </div>
 
+<!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-box">
 <span class="close" onclick="closeModal()">X</span>
+
 <h2 id="mTitle"></h2>
 <p id="mDesc"></p>
+
 <video id="player" controls style="width:100%"></video>
+
+<br><br>
+
+<button class="btn btn-primary" onclick="watchNow()">Watch Now</button>
+<button class="btn btn-secondary" onclick="downloadNow()">Download</button>
+
 </div>
 </div>
 
 <script>
 
 /* =====================
-TMDB KEY (NOW INCLUDED)
+TMDB
 ===================== */
-const TMDB_API_KEY = "ecd720c01128d1959d69001c8ae49592";
-const IMG = "https://image.tmdb.org/t/p/original";
+const TMDB_API_KEY="ecd720c01128d1959d69001c8ae49592";
+const IMG="https://image.tmdb.org/t/p/original";
 
 /* =====================
 ADS
@@ -85,12 +108,12 @@ setTimeout(cb,1000);
 }
 
 /* =====================
-MOVIES SOURCE
+DATA
 ===================== */
 const MY_MOVIES=[
-{query:"Gangor",video:"#"},
-{query:"Youth",video:"#"},
-{query:"Kaalidas 2",video:"#"}
+{query:"Gangor",link:"#"},
+{query:"Youth",link:"#"},
+{query:"Kaalidas 2",link:"#"}
 ];
 
 let movies=[];
@@ -98,7 +121,7 @@ let heroIndex=0;
 let selected=null;
 
 /* =====================
-TMDB FETCH
+TMDB
 ===================== */
 async function tmdbSearch(q){
 try{
@@ -109,10 +132,11 @@ return d.results?d.results[0]:null;
 }
 
 /* =====================
-LOAD MOVIES
+LOAD
 ===================== */
-async function load(){
+async function loadMovies(){
 movies=[];
+
 for(const item of MY_MOVIES){
 
 const t=await tmdbSearch(item.query);
@@ -123,20 +147,21 @@ title:t.title,
 desc:t.overview,
 img:t.poster_path?IMG+t.poster_path:"",
 backdrop:t.backdrop_path?IMG+t.backdrop_path:"",
-video:item.video
+link:item.link
 });
 }
 
 render();
-hero();
+startHero();
 }
 
 /* =====================
-RENDER GRID
+RENDER
 ===================== */
 function render(){
 const g=document.getElementById("grid");
 g.innerHTML="";
+
 movies.forEach((m,i)=>{
 g.innerHTML+=`
 <div class="card" onclick="openMovie(${i})">
@@ -150,19 +175,29 @@ g.innerHTML+=`
 }
 
 /* =====================
-OPEN MOVIE
+OPEN MODAL
 ===================== */
 function openMovie(i){
 selected=movies[i];
+
 document.getElementById("modal").style.display="flex";
 document.getElementById("mTitle").innerText=selected.title;
 document.getElementById("mDesc").innerText=selected.desc;
-document.getElementById("player").src=selected.video;
+
+document.getElementById("player").src="";
 }
 
 /* =====================
-CLOSE
+BUTTONS INSIDE MODAL
 ===================== */
+function watchNow(){
+handleAdAction(()=>document.getElementById("player").play());
+}
+
+function downloadNow(){
+handleAdAction(()=>window.open(selected.link,"_blank"));
+}
+
 function closeModal(){
 document.getElementById("modal").style.display="none";
 document.getElementById("player").src="";
@@ -171,29 +206,54 @@ document.getElementById("player").src="";
 /* =====================
 HERO
 ===================== */
-function hero(){
-
+function startHero(){
 if(!movies.length)return;
 
+setInterval(()=>{
 const m=movies[heroIndex];
 
 document.getElementById("heroImg").src=m.backdrop;
 document.getElementById("heroTitle").innerText=m.title;
 document.getElementById("heroDesc").innerText=m.desc;
 
-heroWatch.onclick=()=>handleAdAction(()=>alert("watch"));
+heroWatch.onclick=()=>handleAdAction(()=>window.open(m.link,"_blank"));
 heroInfo.onclick=()=>handleAdAction(()=>openMovie(heroIndex));
 
 heroIndex++;
 if(heroIndex>=movies.length)heroIndex=0;
+
+},3000);
 }
 
-setInterval(hero,3000);
+/* =====================
+SEARCH (FIXED)
+===================== */
+document.getElementById("search").addEventListener("keyup",function(){
+
+let val=this.value.toLowerCase();
+
+const filtered=movies.filter(m=>m.title.toLowerCase().includes(val));
+
+const g=document.getElementById("grid");
+g.innerHTML="";
+
+filtered.forEach((m,i)=>{
+g.innerHTML+=`
+<div class="card" onclick="openMovie(${i})">
+<img src="${m.img}">
+<div class="info">
+<h4>${m.title}</h4>
+<p>${m.desc.slice(0,60)}</p>
+</div>
+</div>`;
+});
+
+});
 
 /* =====================
 INIT
 ===================== */
-load();
+loadMovies();
 
 </script>
 
