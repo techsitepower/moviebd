@@ -635,7 +635,7 @@ language:"adult",
 genre:"adult",
 year:"2026",
 isNew:true,
-watchLink:"COMING_SOON",
+watchLink:"https://gofile.io/d/ro9b8V",
 downloadLink:"https://gofile.io/d/ro9b8V",
 createdAt:"2026-05-19"
 },
@@ -646,7 +646,7 @@ language:"Hindi",
 genre:"Romance",
 year:"2026",
 isNew:true,
-watchLink:"COMING_SOON",
+watchLink:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",
 downloadLink:"https://1024terabox.com/s/11pqlJ4uC_Z5zq5uOnQl-3w",
 createdAt:"2026-05-13"
 },
@@ -656,7 +656,7 @@ query:"Mission Impossible - The Final Reckoning",
 language:"Hindi Dubbed",
 genre:"Action",
 year:"2026",
-watchLink:"COMING_SOON",
+watchLink:"https://gofile.io/d/rpnACX",
 downloadLink:"https://gofile.io/d/rpnACX",
 isNew:true,
 createdAt:"2026-05-14"
@@ -667,7 +667,7 @@ query:"Kaalidas 2",
 language:"Hindi",
 genre:"Thriller",
 year:"2026",
-watchLink:"COMING_SOON",
+watchLink:"https://gofile.io/d/WhcuPF",
 downloadLink:"https://gofile.io/d/WhcuPF",
 createdAt:"2026-05-17"
 },
@@ -709,7 +709,10 @@ rating:tmdb.vote_average,
 year:item.year,
 language:item.language,
 genre:item.genre,
-link:item.link,
+
+watchLink:item.watchLink,
+downloadLink:item.downloadLink,
+
 isNew:item.isNew,
 createdAt:item.createdAt
 
@@ -814,7 +817,14 @@ selectedMovie.overview+
 document.getElementById("watchBtn")
 .onclick=()=>{
 
-alert("Coming Soon");
+handleAdAction(()=>{
+
+window.open(
+selectedMovie.watchLink,
+"_blank"
+);
+
+});
 
 };
 
@@ -826,7 +836,7 @@ document.getElementById("downloadBtn")
 handleAdAction(()=>{
 
 window.open(
-selectedMovie.link,
+selectedMovie.downloadLink,
 "_blank"
 );
 
